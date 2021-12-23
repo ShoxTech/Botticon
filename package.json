@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "discord.js": "^13.3.1",
+    "node-sheets": "^1.2.0",
+    "util": "^0.12.4"
+  }
+}
