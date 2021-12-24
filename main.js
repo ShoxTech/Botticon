@@ -4,7 +4,13 @@ const Sheets = require("node-sheets").default;
 const util = require('util');
 const sh = require('./sheetHandler.js');
 const pe = require('./postEmbed.js');
+const moment = require('moment');
+const fs = require("fs");
+const lastPost = require("./lastPost.json");
+
 var formattedTable = "Staff:";
+var formattedTime;
+
 const client = new Client({
 
     intents:[Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES]
@@ -19,6 +25,8 @@ async function whenReady(){
     //requireSheetInfo();
     await sh.test("test");
     sh.getPostObject('B');
+    initiateDailyPost();
+    determineExistingPosts();
 
 }
 
@@ -104,20 +112,66 @@ client.on('messageCreate', message => {
 
 
 
+async function initiateDailyPost() {
+    setTimeout(() => {console.log(initiateDailyPost())}, 1000);
+
+    if(!lastPost.lastPost==moment().dayOfYear()) {
+
+        var date = new Date();
+        
+        formattedTime = moment().add(2,"day").unix();
+        
+        console.log("Creating Post...");
+
+
+    }
+
+    else{
+    
+    console.log("Post was already made, returning");
+
+    }
+
+    return moment().day();
+
+}
+
+
+
+
+function callback(huso) {
+
+console.log(huso);
+
+}
+
+
+
+function determineExistingPosts () {
+    var fileName = "lastPost.json";
+    fs.readFile(fileName, 'utf8', function readFileCallback(err, data){
+        if (err){
+            console.log(err);
+        } else {
+        obj = JSON.parse(data); //now it an object
+        obj["lastPost"] = moment().dayOfYear();
+        json = JSON.stringify(obj); //convert it back to json
+        fs.writeFile(fileName, json, 'utf8', callback); // write it back 
+    }});
+
+}
+
+
+
 async function createEmbed(channel) {
-var keepInTouchMessage = `
-Twitch: https://twitch.tv/synd_club
-Website: https://synd-club.com/
-Discord: https://discord.gg/T9vrWuB6TJ
-Instagram: https://instagram.com/syndclub
-Twitter: https://twitter.com/synd-club
-`
+
 var postObject = await sh.getPostObject("B");
     embed = new MessageEmbed()
     .setThumbnail('https://cdn.discordapp.com/emojis/905148984463593522.gif?size=96')
     .addField("But what should I wear?",postObject["weartext"])
     .addField("What about music?",postObject["musictext"])
-    .addField("But how can we keep in touch?",keepInTouchMessage)
+    .addField("But how can we keep in touch?",postObject["social"])
+    .addField("Time",`<t:${formattedTime}>`)
     .setTitle(postObject["title"])
     .setImage(postObject["flyerlink"])
     channel.send(   {embeds: [embed]}  );
