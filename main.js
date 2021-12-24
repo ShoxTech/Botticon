@@ -18,9 +18,7 @@ async function whenReady(){
     console.log("Client is ready to login.");
     //requireSheetInfo();
     await sh.test("test");
-    sh.getPostLayout('A');
-    sh.getPostLayout('B');
-    sh.getPostLayout('C');
+    sh.getPostObject('B');
 
 }
 
@@ -89,11 +87,11 @@ client.on('messageCreate', message => {
 
                     }
                     message.reply(formattedString);
-                    createEmbed(message.channel,formattedTable,"LOL");
+                    createEmbed(message.channel,"","LOL");
                     break;
 
                     case "hi":
-                    message.reply(`${args[0]}\n${args[1]}\n${args[2]}`);
+                    message.reply(`<t:803581260>`);
                     break;
 
 

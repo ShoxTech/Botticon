@@ -3,6 +3,7 @@ const util = require('util');
 const Sheets = require("node-sheets").default;
 const gs = new Sheets('1retoAlSUiBAdBpoGnJ878-7dXaXM2SVeMlu3aRGO7Pw');
 const authData = require('./authData.json');
+const { Discord, MessageEmbed } = require("discord.js");
 var stafflist = {};
 
 
@@ -66,7 +67,20 @@ var getPostLayout = async function(id){
     var ret = {header: lt.headers[0],data: layout};
     return ret;
 }
+var getPostObject = async function(id){
+    console.log('constructing obj');
+    authenticate();
+    var lt = await gs.tables(`Layouts!${id}1:${id}5`);
+    var layout = {
+        title: lt.rows[0][lt.headers[0]]['value'],
+        weartext: lt.rows[1][lt.headers[0]]['value'],
+        musictext: lt.rows[2][lt.headers[0]]['value'],
+        flyerlink: lt.rows[3][lt.headers[0]]['value'], 
+    }
+    console.log(util.inspect(layout,false,null));
+}
 
+var embed = new MessageEmbed();
 
 var getStafflist = function(){
     return stafflist;
@@ -76,6 +90,7 @@ var getStafflist = function(){
 module.exports = {
     test,
     getStafflist,
-    getPostLayout
+    getPostLayout,
+    getPostObject
 
 }
