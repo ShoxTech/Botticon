@@ -21,6 +21,12 @@ var test = async function(test){
         if(!ftab.rows[i]){continue;}
         if(!stab.rows[i]){continue;}
         if(!sttab.rows[i]){continue;}
+        if(!sttab.rows[i]['Name']){continue;}
+        if(!ftab.rows[i]['To ST']){continue;}
+        if(!stab.rows[i]['To ST']){continue;}
+        if(!ftab.rows[i]['From ST']){continue;}
+        if(!stab.rows[i]['From ST']){continue;}
+        
         var obj = {
             name: sttab.rows[i]['Name']['value'],
             friday:{
