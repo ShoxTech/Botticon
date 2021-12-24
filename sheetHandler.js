@@ -78,6 +78,7 @@ var getPostObject = async function(id){
         flyerlink: lt.rows[3][lt.headers[0]]['value'], 
     }
     console.log(util.inspect(layout,false,null));
+    return layout;
 }
 
 var embed = new MessageEmbed();
