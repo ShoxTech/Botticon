@@ -3,6 +3,7 @@ const { prefix, token } = require('./config.json');
 const Sheets = require("node-sheets").default;
 const util = require('util');
 const sh = require('./sheetHandler.js');
+const pe = require('./postEmbed.js');
 var formattedTable = "Staff:";
 const client = new Client({
 
@@ -13,12 +14,13 @@ const client = new Client({
 client.once('ready', whenReady);
 
 async function whenReady(){
-    sh.test("test");
+   
     console.log("Client is ready to login.");
     //requireSheetInfo();
-    await sh.genlist();
-    sh.getPostLayout();
-
+    await sh.test("test");
+    sh.getPostLayout('A');
+    sh.getPostLayout('B');
+    sh.getPostLayout('C');
 
 }
 

@@ -61,10 +61,10 @@ var test = async function(test){
 var getPostLayout = async function(id){
     console.log(`Fetching postLayout(${id}) for discord`);
     authenticate();
-    var lt = await gs.tables('Layouts!A1:A2');
-    layout = lt.rows[1][lt.headers][value];
-    console.log(layout);
-
+    var lt = await gs.tables(`Layouts!${id}1:${id}2`);
+    layout = lt.rows[0][lt.headers[0]]['value'];
+    var ret = {header: lt.headers[0],data: layout};
+    return ret;
 }
 
 
@@ -75,7 +75,6 @@ var getStafflist = function(){
 
 module.exports = {
     test,
-    genlist,
     getStafflist,
     getPostLayout
 
