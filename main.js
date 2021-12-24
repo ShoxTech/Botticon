@@ -94,18 +94,32 @@ client.on('messageCreate', message => {
                     message.reply(`<t:803581260>`);
                     break;
 
+                    case "testembed":
+                    createEmbed(message.channel);
+
 
                 }
         }
 });
 
 
-async function createEmbed(channel, description, title, thumbnail ,col) {
 
+async function createEmbed(channel) {
+var keepInTouchMessage = `
+Twitch: https://twitch.tv/synd_club
+Website: https://synd-club.com/
+Discord: https://discord.gg/T9vrWuB6TJ
+Instagram: https://instagram.com/syndclub
+Twitter: https://twitter.com/synd-club
+`
+var postObject = await sh.getPostObject("B");
     embed = new MessageEmbed()
-    .setThumbnail(thumbnail)
-    .setDescription(`${description}whatever`)
-    .setTitle(title)
+    .setThumbnail('https://cdn.discordapp.com/emojis/905148984463593522.gif?size=96')
+    .addField("But what should I wear?",postObject["weartext"])
+    .addField("What about music?",postObject["musictext"])
+    .addField("But how can we keep in touch?",keepInTouchMessage)
+    .setTitle(postObject["title"])
+    .setImage(postObject["flyerlink"])
     channel.send(   {embeds: [embed]}  );
-
+    
 }
