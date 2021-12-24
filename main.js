@@ -17,6 +17,7 @@ async function whenReady(){
     console.log("Client is ready to login.");
     //requireSheetInfo();
     await sh.genlist();
+    sh.getPostLayout();
 
 
 }
