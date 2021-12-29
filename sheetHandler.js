@@ -70,13 +70,14 @@ var getPostLayout = async function(id){
 var getPostObject = async function(id){
     console.log('constructing obj');
     authenticate();
-    var lt = await gs.tables(`Layouts!${id}1:${id}6`);
+    var lt = await gs.tables(`Layouts!${id}1:${id}7`);
     var layout = {
         title: lt.rows[0][lt.headers[0]]['value'],
         weartext: lt.rows[1][lt.headers[0]]['value'],
         musictext: lt.rows[2][lt.headers[0]]['value'],
         flyerlink: lt.rows[3][lt.headers[0]]['value'], 
         social: lt.rows[4][lt.headers[0]]['value'], 
+        channelid: lt.rows[5][lt.headers[0]]['value']
     }
     return layout;
 }

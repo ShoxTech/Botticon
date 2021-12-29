@@ -1,5 +1,5 @@
 const {Intents, Discord, Client, Message, MessageEmbed, Channel, Emoji, Collector, GuildChannel, Team} = require('discord.js');
-const { prefix, token } = require('./config.json');
+const config = require('./config.json');
 const Sheets = require("node-sheets").default;
 const util = require('util');
 const sh = require('./sheetHandler.js');
@@ -7,6 +7,8 @@ const pe = require('./postEmbed.js');
 const moment = require('moment');
 const fs = require("fs");
 const lastPost = require("./lastPost.json");
+const cron = require('./scheduler.js');
+
 
 var formattedTable = "Staff:";
 var formattedTime;
@@ -27,18 +29,19 @@ async function whenReady(){
     sh.getPostObject('B');
     initiateDailyPost();
     determineExistingPosts();
+    cron.cronInit(createEmbedPost);
 
 }
 
 
-if(token.length>0) {
+if(config.discord.token.length>0) {
 
-    client.login(token);
+    client.login(config.discord.token);
 
 }
 else {
 
-console.log(`Token is invalid: ${token}`);
+console.log(`Token is invalid: ${config.discord.token}`);
 
 }
 
@@ -79,21 +82,16 @@ catch(error) {
 } 
 
 client.on('messageCreate', message => {
-
+    if(message.channelId!=config.discord.channelid) {return;}
     if(!message.author.bot) {
-    const args = message.content.slice(prefix.length).trim().split(/ +/g);
+    const args = message.content.slice(config.discord.prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
             switch(command) {
 
                     case "help":
                     console.log("Help requested");
-                    var formattedString = "";
-                    for(var I=0;I<args.length;I++) {
+                    break;
 
-                        formattedString+=args[I]+"\n";
-
-
-                    }
                     message.reply(formattedString);
                     createEmbed(message.channel,"","LOL");
                     break;
@@ -110,10 +108,8 @@ client.on('messageCreate', message => {
         }
 });
 
-
-
 async function initiateDailyPost() {
-    setTimeout(() => {console.log(initiateDailyPost())}, 1000);
+    //setTimeout(() => {console.log(initiateDailyPost())}, 1000);
 
     if(!lastPost.lastPost==moment().dayOfYear()) {
 
@@ -161,19 +157,41 @@ function determineExistingPosts () {
 
 }
 
+async function createEmbed(channel, title) {
+
+embed = new MessageEmbed()
+.setTitle(title)
+
+channel.send( {embeds: [embed]});
 
 
-async function createEmbed(channel) {
+}
 
-var postObject = await sh.getPostObject("B");
-    embed = new MessageEmbed()
-    .setThumbnail('https://cdn.discordapp.com/emojis/905148984463593522.gif?size=96')
-    .addField("But what should I wear?",postObject["weartext"])
-    .addField("What about music?",postObject["musictext"])
-    .addField("But how can we keep in touch?",postObject["social"])
-    .addField("Time",`<t:${formattedTime}>`)
-    .setTitle(postObject["title"])
-    .setImage(postObject["flyerlink"])
-    channel.send(   {embeds: [embed]}  );
-    
+async function createEmbedPost(row,layout) {
+
+    var postObject = await sh.getPostObject(row);
+    var guild = client.guilds.cache.get(config.discord.guildid);
+    var channel = guild.channels.cache.get(postObject["channelid"]);
+    switch(layout){
+        case "1":
+            embed = new MessageEmbed()
+            .setThumbnail('https://cdn.discordapp.com/emojis/905148984463593522.gif?size=96')
+            .addField("But what should I wear?",postObject["weartext"])
+            .addField("What about music?",postObject["musictext"])
+            .addField("But how can we keep in touch?",postObject["social"])
+            .addField("Time",`<t:${formattedTime}>`)
+            .setTitle(postObject["title"])
+            .setImage(postObject["flyerlink"])
+            channel.send(   {embeds: [embed]}  );
+        case "2":
+            embed = new MessageEmbed()
+            .setThumbnail('https://cdn.discordapp.com/emojis/905148984463593522.gif?size=96')
+            .addField("",postObject["weartext"])
+            .addField("Link to the register",postObject["flyerlink"])
+            .setTitle(postObject["title"])
+            channel.send(   {embeds: [embed]}  );
+        default: 
+        console.log("");
+    }
+     
 }

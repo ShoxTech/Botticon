@@ -1,8 +1,8 @@
 {
-
-"token": "OTIzNTUxMDUyNzY5NDAyOTMx.YcRp8Q.qRzMIyq4aKjX_Ocef0RMTlUi8gI",
-"prefix": "."
-
-
-
+"discord": {
+    "token": "OTIzNTUxMDUyNzY5NDAyOTMx.YcRp8Q.qRzMIyq4aKjX_Ocef0RMTlUi8gI",
+    "prefix": ".",
+    "channelid": "916373053397680209",
+    "guildid": "916022433402748939"
+    }
 }
