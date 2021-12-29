@@ -1,8 +1,36 @@
 {
-"discord": {
-    "token": "OTIzNTUxMDUyNzY5NDAyOTMx.YcRp8Q.qRzMIyq4aKjX_Ocef0RMTlUi8gI",
-    "prefix": ".",
-    "channelid": "916373053397680209",
-    "guildid": "916022433402748939"
-    }
+    "discord": {
+        "token": "OTIzNTUxMDUyNzY5NDAyOTMx.YcRp8Q.qRzMIyq4aKjX_Ocef0RMTlUi8gI",
+        "prefix": ".",
+        "channelid": "916373053397680209",
+        "guildid": "916022433402748939"
+    },
+
+    "jobs": [
+        {
+            "cron": "0 15 * * 1",
+            "field": "D",
+            "layout": "2"
+        },
+        {
+            "cron" : "0 15 * * 3",
+            "field": "D",
+            "layout": "2"
+        },
+        {
+            "cron" : "0 15 * * 3",
+            "field": "B",
+            "layout": "1"
+        },
+        {
+            "cron" : "0 15 * * 5",
+            "field": "B",
+            "layout": "1"
+        },
+        {
+            "cron": "*/1 * * * *",
+            "field": "B",
+            "layout": "1"
+        }
+    ]
 }

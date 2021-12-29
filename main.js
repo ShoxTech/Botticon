@@ -29,7 +29,7 @@ async function whenReady(){
     sh.getPostObject('B');
     initiateDailyPost();
     determineExistingPosts();
-    cron.cronInit(createEmbedPost);
+    cron.cronInit(config.jobs,createEmbedPost);
 
 }
 
@@ -183,13 +183,17 @@ async function createEmbedPost(row,layout) {
             .setTitle(postObject["title"])
             .setImage(postObject["flyerlink"])
             channel.send(   {embeds: [embed]}  );
+            break;
         case "2":
             embed = new MessageEmbed()
             .setThumbnail('https://cdn.discordapp.com/emojis/905148984463593522.gif?size=96')
-            .addField("",postObject["weartext"])
+            .addField("INFO",postObject["weartext"])
             .addField("Link to the register",postObject["flyerlink"])
+            .setURL(postObject["flyerlink"])
             .setTitle(postObject["title"])
+            .setFooter("Made by ShoxTech & Kiri Kasuto","https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/GNOME_Terminal_icon_2019.svg/192px-GNOME_Terminal_icon_2019.svg.png")
             channel.send(   {embeds: [embed]}  );
+            break;
         default: 
         console.log("");
     }
